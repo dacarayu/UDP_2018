@@ -181,10 +181,15 @@ class Agenda:
 	
 	def _print(self,contact):
 		if contact == None:
-			pass
-			return
 		if contact.left != None:
-			print("Contacto: {} {}, {}, {} ".format(contact.left.nombre,contact.left.apellido,contact.left.telefono,contact.email))
+			print("Hello")
+			self._print(contact.left)
+			print("Contacto: {} {}, {}, {} ".format(contact.nombre,contact.apellido,contact.telefono,contact.email))
+			return
+		elif contact.right != None:
+			print("Contacto: {} {}, {}, {} ".format(contact.nombre,contact.apellido,contact.telefono,contact.email))
+			print("NANI!")
+			self._print(contact.right)
 		else:
 			print("Contacto: {} {}, {}, {} ".format(contact.nombre,contact.apellido,contact.telefono,contact.email))
 """
@@ -239,9 +244,9 @@ Agenda.print()
 #Agenda.add(fake.first_name(),fake.last_name(),"123","123")		#se agrega un contacto
 Agenda.add("diego","Caceres","123","123")
 Agenda.add("Cesar","Alvarez","123","123")
-Agenda.print()
 Agenda.add("Gabriela","Acuña","123","123")
-Agenda.add("Diaguita","Aguilera","123","123")
-Agenda.add("Diegosa","ail","123","123")
+Agenda.add("Diaguito","Aguilera","123","123")
+Agenda.add("Diegosa","ali","123","123")
+Agenda.print()
 Agenda.delete("Acuña")
 Agenda.print()
