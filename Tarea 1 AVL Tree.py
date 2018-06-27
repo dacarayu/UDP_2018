@@ -1,3 +1,5 @@
+from faker import Faker
+fake = Faker()
 class Contact:
 	def __init__(self,nombre,apellido,telefono,email):
 		self.nombre = nombre
@@ -22,7 +24,7 @@ class Agenda:
 		else:
 			self._add(nombre,apellido,telefono,email,self.root)
 
-	def _add(self,nombre,apellido,telefono,email,contact):	## Suponiendo que viene de la def add ese contact
+	def _add(self,nombre,apellido,telefono,email,contact):
 		if apellido < contact.apellido:
 			if contact.left == None:
 				contact.left = Contact(nombre,apellido,telefono,email)
@@ -174,79 +176,50 @@ class Agenda:
 			return
 		elif self.root != None:
 			contact = self.root
-			self._print(self.root.left)
+			self._print(contact.left)
 			print("Contacto: {} {}, {}, {} ".format(contact.nombre,contact.apellido,contact.telefono,contact.email))
-			self._print(self.root.right)
+			self._print(contact.right)
 		
 	
 	def _print(self,contact):
 		if contact == None:
+			return
+
 		if contact.left != None:
-			print("Hello")
-			self._print(contact.left)
-			print("Contacto: {} {}, {}, {} ".format(contact.nombre,contact.apellido,contact.telefono,contact.email))
-			return
-		elif contact.right != None:
-			print("Contacto: {} {}, {}, {} ".format(contact.nombre,contact.apellido,contact.telefono,contact.email))
-			print("NANI!")
-			self._print(contact.right)
-		else:
-			print("Contacto: {} {}, {}, {} ".format(contact.nombre,contact.apellido,contact.telefono,contact.email))
-"""
-		if contact == None:
-			return
-		if contact.left == None or contact.left.left == None:
-			if contact.left != None:
-				print("Contacto: {} {}, {}, {} ".format(contact.left.nombre, contact.left.apellido,contact.left.telefono,contact.left.email))
-				print("Contacto: {} {}, {}, {} ".format(contact.nombre, contact.apellido,contact.telefono,contact.email))
-				self._print(contact.left)
-			else:
-				print("Contacto: {} {}, {}, {} ".format(contact.nombre, contact.apellido,contact.telefono,contact.email))
-				self._print(contact.right)
-		elif contact.right == None or contact.right.right == None:
 			if contact.right != None:
-				print("Contacto: {} {}, {}, {} ".format(contact.right.nombre, contact.right.apellido,contact.right.telefono,contact.right.email))
-				print("Contacto: {} {}, {}, {} ".format(contact.nombre, contact.apellido,contact.telefono,contact.email))
-			else:
-				print("Contacto: {} {}, {}, {} ".format(contact.nombre, contact.apellido,contact.telefono,contact.email))
-
-
-	def print(self):
-		if self.root == None:
-			print("La agenda se encuentra vacia")
-			return
-		return self._print(self.root)
-
-	def _print(self,contact):
-		if self.contact.left != None:  # Avanza el nodo más a la izquerda
-			self._print(contact.left)
-
-		elif self.contact.left == None and contact.padre.left == contact: # Verifica si es el ultimo nodo a la izquerda
-			print("Contacto: {} {}, {}, {} ".format(contact.nombre, contact.apellido,contact.telefono,contact.email))
-			self._print(contact.padre.right)
-
-		elif self.contact.padre.right == contact:
-			print("Contacto: {} {}, {}, {} ".format(contact.padre.nombre, contact.padre.apellido,contact.padre.telefono,contact.padre.email))
-			self._print(contact.padre)
-
-		else:
-			print("Contacto: {} {}, {}, {} ".format(contact.nombre, contact.apellido,contact.telefono,contact.email))
-			if self.contact.left != None:
 				self._print(contact.left)
-			elif self.contact.right != None:
+				print("Contacto: {} {}, {}, {} ".format(contact.nombre,contact.apellido,contact.telefono,contact.email))
 				self._print(contact.right)
 			else:
-				return
-"""
+				self._print(contact.left)
+				print("Contacto: {} {}, {}, {} ".format(contact.nombre,contact.apellido,contact.telefono,contact.email))
+			return
+
+
+		elif contact.right == None or contact.left == None:
+			print("Contacto: {} {}, {}, {} ".format(contact.nombre,contact.apellido,contact.telefono,contact.email))
+			
+
+		elif contact.right == None and contact.left != None:
+			self._print(contact.left)
+			print("Contacto: {} {}, {}, {} ".format(contact.nombre,contact.apellido,contact.telefono,contact.email))
+
+		elif contact.left == None and contact.right == None:
+			return
 
 Agenda = Agenda()	# lista de contactos vacia
+for i in range(4):
+	Agenda.add(fake.first_name(),fake.last_name(),fake.phone_number(),fake.email())
 Agenda.print()
-#Agenda.add(fake.first_name(),fake.last_name(),"123","123")		#se agrega un contacto
+
+"""
+Agenda.add(fake.first_name(),fake.last_name(),"123","123")		#se agrega un contacto
 Agenda.add("diego","Caceres","123","123")
 Agenda.add("Cesar","Alvarez","123","123")
 Agenda.add("Gabriela","Acuña","123","123")
 Agenda.add("Diaguito","Aguilera","123","123")
-Agenda.add("Diegosa","ali","123","123")
+Agenda.add("Diegosa","Ali","123","123")
+Agenda.add("alvarosa","Benli","123","123")
 Agenda.print()
 Agenda.delete("Acuña")
-Agenda.print()
+"""

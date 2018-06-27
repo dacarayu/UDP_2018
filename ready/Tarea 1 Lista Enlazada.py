@@ -1,5 +1,5 @@
-#from faker import Faker
-#fake = Faker()
+from faker import Faker
+fake = Faker()
 class Contact:
     def __init__(self,nombre,apellido,telefono,email):
         self.nombre = nombre
