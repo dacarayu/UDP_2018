@@ -222,3 +222,8 @@ class Agenda:
 			return
 		else:
 			return
+
+Agenda = Agenda()	# lista de contactos vacia
+for i in range(10):
+	Agenda.add(fake.first_name(),fake.last_name(),fake.phone_number(),fake.email())
+Agenda.print()
