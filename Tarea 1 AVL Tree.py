@@ -26,22 +26,27 @@ class Agenda:
 
 	def _add(self,nombre,apellido,telefono,email,contact):
 		if apellido < contact.apellido:
+			print("Comparando ",contact.apellido + " con "+ apellido)
 			if contact.left == None:
 				contact.left = Contact(nombre,apellido,telefono,email)
-				print(nombre, "ingresado")
+				print(nombre,apellido, "ingresado")
 				contact.left.padre = contact
 				self.actualizarEquilibrio(contact.left)
+				return
 			else:
 				self._add(nombre,apellido,telefono,email,contact.left)
-		elif apellido > contact.apellido:
+				return
+		elif contact.apellido < apellido:
+			print("Comparando ",contact.apellido + " con "+ apellido)
+
 			if contact.right == None:
 				contact.right = Contact(nombre,apellido,telefono,email)
-				print(nombre, "ingresado")
+				print(nombre,apellido, "ingresado")
 				contact.right.padre = contact
 				self.actualizarEquilibrio(contact.right)
 			else:
 				self._add(nombre,apellido,telefono,email,contact.right)
-		else:
+		elif apellido == contact.apellido:
 			print("Este contacto ya se encuentra registrado")
 
 	def actualizarEquilibrio(self,contact):
@@ -58,10 +63,14 @@ class Agenda:
 		return
 
 	def rotarIzquerda(self,rotRaiz):
+		print(rotRaiz.apellido, "Rotado a la izquerda")
 		nuevaRaiz = rotRaiz.right
 		if nuevaRaiz.left != None:
+			rotRaiz.right = nuevaRaiz.left
 			nuevaRaiz.left.padre = rotRaiz
 			nuevaRaiz.padre = rotRaiz.padre
+		else:
+			rotRaiz.right = None
 		if rotRaiz.padre == None:
 			self.root = nuevaRaiz
 		else:
@@ -69,17 +78,21 @@ class Agenda:
 				rotRaiz.padre.left = nuevaRaiz
 			else:
 				rotRaiz.padre.right = nuevaRaiz
+
 		nuevaRaiz.left = rotRaiz
 		rotRaiz.padre = nuevaRaiz
-		rotRaiz.equilibrio = rotRaiz.equilibrio - 1 - max(nuevaRaiz.equilibrio,0)
-		nuevaRaiz.equilibrio = nuevaRaiz.equilibrio - 1 +min(rotRaiz.equilibrio,0)
+		rotRaiz.equilibrio = rotRaiz.equilibrio + 1 - min(nuevaRaiz.equilibrio,0)
+		nuevaRaiz.equilibrio = nuevaRaiz.equilibrio + 1 + max(rotRaiz.equilibrio,0)
 
 	def rotarDerecha(self,rotRaiz):
+		print(rotRaiz.apellido, "Rotado a la derecha")
 		nuevaRaiz = rotRaiz.left
-		rotRaiz.left = nuevaRaiz.right
 		if nuevaRaiz.right != None:
+			rotRaiz.left = nuevaRaiz.right
 			nuevaRaiz.right.padre = rotRaiz
 			nuevaRaiz.padre = rotRaiz.padre
+		else:
+			rotRaiz.left = None
 		if rotRaiz.padre == None:
 			self.root = nuevaRaiz
 		else:
@@ -93,13 +106,13 @@ class Agenda:
 		nuevaRaiz.equilibrio = nuevaRaiz.equilibrio + 1 +max(rotRaiz.equilibrio,0)
 
 	def reequilibrar(self,contact):
-		if contact.equilibrio > 0:
-			if contact.right.equilibrio == 0:
+		if contact.equilibrio > 1:
+			if contact.right.equilibrio < 0:
 				self.rotarDerecha(contact.right)
 				self.rotarIzquerda(contact)
 			else:
 				self.rotarIzquerda(contact)
-		elif contact.equilibrio < 0:
+		elif contact.equilibrio < -1:
 			if contact.left.equilibrio > 0:
 				self.rotarIzquerda(contact.left)
 				self.rotarDerecha(contact)
@@ -190,6 +203,7 @@ class Agenda:
 				self._print(contact.left)
 				print("Contacto: {} {}, {}, {} ".format(contact.nombre,contact.apellido,contact.telefono,contact.email))
 				self._print(contact.right)
+				return	
 			else:
 				self._print(contact.left)
 				print("Contacto: {} {}, {}, {} ".format(contact.nombre,contact.apellido,contact.telefono,contact.email))
@@ -206,20 +220,5 @@ class Agenda:
 
 		elif contact.left == None and contact.right == None:
 			return
-
-Agenda = Agenda()	# lista de contactos vacia
-for i in range(4):
-	Agenda.add(fake.first_name(),fake.last_name(),fake.phone_number(),fake.email())
-Agenda.print()
-
-"""
-Agenda.add(fake.first_name(),fake.last_name(),"123","123")		#se agrega un contacto
-Agenda.add("diego","Caceres","123","123")
-Agenda.add("Cesar","Alvarez","123","123")
-Agenda.add("Gabriela","Acuña","123","123")
-Agenda.add("Diaguito","Aguilera","123","123")
-Agenda.add("Diegosa","Ali","123","123")
-Agenda.add("alvarosa","Benli","123","123")
-Agenda.print()
-Agenda.delete("Acuña")
-"""
+		else:
+			return

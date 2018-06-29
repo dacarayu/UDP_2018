@@ -1,20 +1,24 @@
 class Node:
-	def __init__(self, nombre,apellido,telefono,email):
-		self.nombre = nombre
-		self.apellido = apellido
-		self.telefono = telefono
-		self.email = email
-		self.data = [nombre,apellido,telefono,email]
-		self.parent = None
-		self.child = []
+	def __init__(self, nombre,apellido,telefono,email,par = None):
+		self.data = list([nombre,apellido,telefono,email])
+		self.parent = par
+		self.child = list()
 
-	def _is_leaf(self):
+	def __str__(self):
+		if self.parent:
+			return str(self.parent.data) + ' : ' + str(self.data)
+		return ('Root : ' + str(self.data))
+
+	def __lt__(self, node):
+		return self.data[0] < node.data[0]
+
+	def _isLeaf(self):
 		return len(self.child) == 0
 
 	def _add(self, new_node):
 		for child in new_node.child:
 			child.parent = self
-		self.data.extend(new_node)
+		self.data.extend(new_node.data)
 		self.data.sort()
 		self.child.extend(new_node.child)
 		if len(self.child) > 1:
@@ -26,7 +30,7 @@ class Node:
 	def _insert(self, new_node):
 
 		# Si es hoja, añade el dato a la hoja y hace un balanceo
-		if self._is_leaf(): 
+		if self._isLeaf(): 
 			self._add(new_node)
 
 		# Si no es hoja, debe encontrar el hijo correcto para descender y hace una inserción recursiva
@@ -40,7 +44,7 @@ class Node:
 
 	# Cuando hay 3 items en el nodo, se divide en un nuevo sub-arbol y se añade al padre
 	def _split(self):
-		left_child = Node(self, self.data[0])
+		left_child = Node(self, self.data[1],self.data[2],self.data[3])
 		right_child = Node(self, self.data[2])
 		if self.child:
 			self.child[0].parent = left_child
