@@ -230,5 +230,5 @@ Agenda = Agenda()	# lista de contactos vacia
 for i in range(10):
 	Agenda.add(fake.first_name(),fake.last_name(),fake.phone_number(),fake.email())
 Agenda.print()
-#for i in range(30):
-#	Agenda.delete(fake.last_name())
+for i in range(30):
+	Agenda.delete(fake.last_name())

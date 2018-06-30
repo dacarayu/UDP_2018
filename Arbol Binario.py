@@ -129,8 +129,8 @@ Libreta = Libreta()  # lista de contactos vacia
 for i in range(1000):
 	Libreta.add(fake.first_name(),fake.last_name(),fake.phone_number(),fake.email())
 print(Libreta.in_order)
-#for i in range(1000):
-#	Libreta.delete(fake.last_name())
+for i in range(1000):
+	Libreta.delete(fake.last_name())
 """
 Libreta.add("Alvaro","Zapata","123","123")	#se agrega un contacto
 Libreta.add("diego","Caceres","123","123")
