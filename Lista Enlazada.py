@@ -101,6 +101,6 @@ Libreta = Libreta()
 for i in range(1000):
 	Libreta.add(fake.first_name(),fake.last_name(),fake.phone_number(),fake.email())
 Libreta.print_libreta()
-for i in range(1000):
-	Libreta.delete(fake.last_name())
+#for i in range(1000):
+#	Libreta.delete(fake.last_name())
 Libreta.print_libreta()
