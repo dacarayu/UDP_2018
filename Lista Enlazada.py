@@ -1,3 +1,4 @@
+import time
 from faker import Faker
 fake = Faker()
 class Contact:
@@ -19,42 +20,43 @@ class Libreta:
         if self.count == 0:
             self.head = contact
             self.count += 1
-            print (contact.nombre, contact.apellido, "agregado")
+            #print (contact.nombre, contact.apellido, "agregado")
         elif self.count == 1:
             if aux.apellido == contact.apellido:
-                print("Se intento agregar a",contact.nombre, contact.apellido, "pero este contacto ya existe")
+                #print("Se intento agregar a",contact.nombre, contact.apellido, "pero este contacto ya existe")
+                pass
             elif aux.apellido > contact.apellido:
             	self.head.next = aux
             	self.head = contact
             	self.count += 1
-            	print(contact.nombre, contact.apellido, "agregado")
+            	#print(contact.nombre, contact.apellido, "agregado")
             else:
             	self.head = contact
             	contact.next = aux
             	self.count += 1
-            	print(contact.nombre, contact.apellido, "agregado")
+            	#print(contact.nombre, contact.apellido, "agregado")
         else:
         	if aux.apellido > contact.apellido:
         		contact.next = aux
         		self.head = contact
         		self.count += 1
-        		print(contact.nombre, contact.apellido, "agregado")
+        		#print(contact.nombre, contact.apellido, "agregado")
         		return
         	i = 1
         	while(i < self.count):
         		if aux.apellido == contact.apellido:
-        			print ("Se intento agregar a",contact.nombre, contact.apellido, "pero este contacto ya existe")
+        			#print ("Se intento agregar a",contact.nombre, contact.apellido, "pero este contacto ya existe")
         			return
         		if aux.apellido < contact.apellido and aux.next == None:
         			aux.next = contact
         			self.count += 1 
-        			print(contact.nombre, contact.apellido, "agregado")
+        			#print(contact.nombre, contact.apellido, "agregado")
         			return
         		elif aux.apellido < contact.apellido and aux.next.apellido > contact.apellido:
         			contact.next = aux.next
         			aux.next = contact
         			self.count += 1
-        			print(contact.nombre, contact.apellido, "agregado")
+        			#print(contact.nombre, contact.apellido, "agregado")
         			return
         		else:
         			aux = aux.next
@@ -66,21 +68,21 @@ class Libreta:
         if self.count == 1:
         	self.head = None
         	self.count = 0
-        	print(aux.nombre, "Eliminado")
+        	#print(aux.nombre, "Eliminado")
         i = 1
         while(i < self.count):
         	if aux.apellido == apellido:
         		self.head =aux.next
         		self.count -= 1
-        		print(aux.nombre, "Eliminado")
+        		#print(aux.nombre, "Eliminado")
         		return
         	elif aux.next == None:
-        		print ("El contacto no existe")
+        		#print ("El contacto no existe")
         		return
         	elif aux.next.apellido == apellido:
         		aux.next = aux.next.next
         		self.count -= 1
-        		print(aux.nombre, "Eliminado")
+        		#print(aux.nombre, "Eliminado")
         		return
         	else:
         		aux = aux.next
@@ -100,7 +102,11 @@ class Libreta:
 Libreta = Libreta()
 for i in range(1000):
 	Libreta.add(fake.first_name(),fake.last_name(),fake.phone_number(),fake.email())
+	time_add = time.process_time()
 Libreta.print_libreta()
-#for i in range(1000):
-#	Libreta.delete(fake.last_name())
+for i in range(1000):
+	Libreta.delete(fake.last_name())
+	time_delete = time.process_time()
 Libreta.print_libreta()
+print("en agregar contactos tardo: ", time_add, "segundos")
+print("en eliminar contactos tardo: ", time_delete, "segundos")

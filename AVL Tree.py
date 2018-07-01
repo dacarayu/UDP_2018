@@ -1,3 +1,4 @@
+import time
 from faker import Faker
 fake = Faker()
 class Contact:
@@ -124,25 +125,30 @@ class Agenda:
 		if self.root == None:
 			return None
 		else:
-			return (self._buscar(apellido,self.root))
+			contact = self._buscar(apellido,self.root)
+			return contact
 
 	def _buscar(self,apellido,contact):
+		print("No se encontro el contacto")
 		if contact == None:
-			return 
-		elif apellido == contact.apellido:
+			pass 
+		if apellido == contact.apellido:
 			return contact
 		elif apellido < contact.apellido and contact.left != None:
-			return self._buscar(apellido,contact.left)
+			self._buscar(apellido,contact.left)
+			return contact
 		elif apellido > contact.apellido and contact.right != None:
-			return self._buscar(apellido,contact.right)
-		else:
-			print("No se encontro el contacto")
+			self._buscar(apellido,contact.right)
+			return contact
+		#else:
 
 	def delete(self,apellido):
 		if self.root == None:
 			print ("No hay contactos que eliminar")
 			return
-		return self.delete_contact(self.buscar(apellido))
+		contact = self.buscar(apellido)
+		print (contact.nombre)
+		return self.delete_contact(contact)
 
 	def delete_contact(self,contact):
 		print(contact)
@@ -170,14 +176,15 @@ class Agenda:
 			else:
 				child = contact.right
 
-			if contact.padre.left == contact:
+			if contact.padre != None and contact.padre.left == contact:
 				contact.padre.left = child
 				self.actualizarEquilibrio(contact.padre)
 				print(contact.nombre, "Eliminado")
 			else:
-				contact.padre.right = child
-				self.actualizarEquilibrio(contact.padre)
-				print(contact.nombre, "Eliminado")
+				if contact.padre != None:
+					contact.padre.right = child
+					self.actualizarEquilibrio(contact.padre)
+					print(contact.nombre, "Eliminado")
 			child.padre = contact.padre
 
 		if number_children(contact) == 2:
@@ -227,8 +234,9 @@ class Agenda:
 			return
 
 Agenda = Agenda()	# lista de contactos vacia
-for i in range(10):
-	Agenda.add(fake.first_name(),fake.last_name(),fake.phone_number(),fake.email())
+for i in range(1000):
+	Agenda.add(fake.first_name(),i,fake.phone_number(),fake.email())
+	time_add = time.process_time()
 Agenda.print()
-for i in range(30):
-	Agenda.delete(fake.last_name())
+print("en agregar contactos tardo: ", time_add, "segundos")
+Agenda.print()

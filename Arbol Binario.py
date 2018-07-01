@@ -1,3 +1,4 @@
+import time
 from faker import Faker
 fake = Faker()
 class Contact:
@@ -26,19 +27,20 @@ class Libreta:
 		if apellido < contact.apellido:
 			if contact.left == None:
 				contact.left = Contact(nombre,apellido,telefono,email)
-				print(contact.nombre, "agregado")
+				#print(contact.nombre, "agregado")
 				contact.left.parent = contact
 			else:
 				self._insert(nombre,apellido,telefono,email, contact.left)
 		elif apellido > contact.apellido:
 			if contact.right == None:
 				contact.right = Contact(nombre,apellido,telefono,email)
-				print(contact.nombre, "agregado")
+				#print(contact.nombre, "agregado")
 				contact.right.parent = contact
 			else:
 				self._insert(nombre,apellido,telefono,email, contact.right)
 		else:
-			print("Este contacto ya ese encuentra registrado")
+			#print("Este contacto ya ese encuentra registrado")
+			pass
 
 	def buscar(self,apellido):
 		if self.root==None:
@@ -80,10 +82,10 @@ class Libreta:
 			if node_children == 0:
 				if node_parent.left == contact:
 					node_parent.left = None
-					print(contact.nombre, "Eliminado")
+					#print(contact.nombre, "Eliminado")
 				else:
 					node_parent.right = None
-					print(contact.nombre, "Eliminado")
+					#print(contact.nombre, "Eliminado")
 			# Case 2: Deleting a node with one children
 			if node_children == 1:
 				# Get the children of the node to be deleted
@@ -95,10 +97,10 @@ class Libreta:
 				# Replace the node to be deleted with its child
 				if node_parent.left == contact:
 					node_parent.left = child
-					print(contact.nombre, "Eliminado")
+					#print(contact.nombre, "Eliminado")
 				else:
 					node_parent.right = child
-					print(contact.nombre, "Eliminado")
+					#print(contact.nombre, "Eliminado")
 
 			# Change the parent of the child
 				child.parent = node_parent
@@ -106,7 +108,7 @@ class Libreta:
 			if node_children == 2:
 				successor = contact.right # Get the inorder successor of the deleted node
 				contact = successor # Copy the value
-				print(contact.nombre, "Eliminado")
+				#print(contact.nombre, "Eliminado")
 				self.delete_node(successor)
 
 
@@ -128,16 +130,11 @@ class Libreta:
 Libreta = Libreta()  # lista de contactos vacia
 for i in range(1000):
 	Libreta.add(fake.first_name(),fake.last_name(),fake.phone_number(),fake.email())
+	time_add = time.process_time()
 print(Libreta.in_order)
 for i in range(1000):
 	Libreta.delete(fake.last_name())
-"""
-Libreta.add("Alvaro","Zapata","123","123")	#se agrega un contacto
-Libreta.add("diego","Caceres","123","123")
-Libreta.add("Cesar","Alvarez","123","123")
-Libreta.add("Gabriela","Acuña","123","123")
-Libreta.add("Digna","Aguilera","123","123")
-Libreta.add("Diegosa","Caceresa","123","123")
-Libreta.delete("Acuña")
-"""
+	time_delete = time.process_time()
 print(Libreta.in_order())
+print("en agregar contactos tardo: ", time_add, "segundos")
+print("en eliminar contactos tardo: ", time_delete, "segundos")
